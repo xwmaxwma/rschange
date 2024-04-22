@@ -33,7 +33,7 @@
   pip install -r requirements.txt
   ```
 
-​		Note: same as [rsseg](https://github.com/xwmaxwma/rssegmentation). If you have already installed the environment of [rsseg](https://github.com/xwmaxwma/rssegmentation), use it directly.
+​  Note: same as [rsseg](https://github.com/xwmaxwma/rssegmentation). If you have already installed the environment of [rsseg](https://github.com/xwmaxwma/rssegmentation), use it directly.
 
 - Dataset preprocessing
 
@@ -45,7 +45,7 @@
   
   Note: We also provide the pre-processed data, which can be downloaded at this [link](https://drive.google.com/drive/folders/1zxhJ7v3UPgNsKkdvkYCOW7DdKDAAy_ll?usp=sharing)
   
-- Folder Structure
+## Folder Structure
 
   Prepare the following folders to organize this repo:
 
