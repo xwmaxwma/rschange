@@ -141,7 +141,7 @@
 
 ## Citation
 
-```shell
+```
 @inproceedings{ma2023stnet,
   title={STNet: Spatial and Temporal feature fusion network for change detection in remote sensing images},
   author={Ma, Xiaowen and Yang, Jiawei and Hong, Tingfeng and Ma, Mengting and Zhao, Ziyan and Feng, Tian and Zhang, Wei},
