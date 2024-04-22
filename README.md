@@ -5,11 +5,11 @@
 - Supported Methods
   - [STNet](https://ieeexplore.ieee.org/abstract/document/10219826) (ICME2023)
 
-	- DDLNet (ICME2024 oral)
+  - DDLNet (ICME2024 oral)
 
-	- DCPFormer (Under review, updated soon)
+  - DCPFormer (Under review, updated soon)
 	
-	- CD-Mamba (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
+  - CD-Mamba (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
 - Supported Datasets
   - [LEVIR-CD](https://chenhao.in/LEVIR/)
   - [DSIFN-CD](https://github.com/GeoZcx/A-deeply-supervised-image-fusion-network-for-change-detection-in-remote-sensing-images/tree/master/dataset)
