@@ -1,0 +1,1 @@
+from rscd.models.backbones.stnet_backbone import Resnet18

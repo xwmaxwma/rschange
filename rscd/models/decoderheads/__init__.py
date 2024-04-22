@@ -1,0 +1,1 @@
+from rscd.models.decoderheads.stnet import STNet
