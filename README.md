@@ -33,7 +33,7 @@
   pip install -r requirements.txt
   ```
 
-​. ​Note: same as [rsseg](https://github.com/xwmaxwma/rssegmentation). If you have already installed the environment of [rsseg](https://github.com/xwmaxwma/rssegmentation), use it directly.
+​    ​Note: same as [rsseg](https://github.com/xwmaxwma/rssegmentation). If you have already installed the environment of [rsseg](https://github.com/xwmaxwma/rssegmentation), use it directly.
 
 - Dataset preprocessing
 
