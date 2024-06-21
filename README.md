@@ -150,6 +150,15 @@
   year={2023},
   organization={IEEE}
 }
+
+@misc{ma2024ddlnet,
+      title={DDLNet: Boosting Remote Sensing Change Detection with Dual-Domain Learning}, 
+      author={Xiaowen Ma and Jiawei Yang and Rui Che and Huanting Zhang and Wei Zhang},
+      year={2024},
+      eprint={2406.13606},
+      archivePrefix={arXiv},
+      primaryClass={id='cs.CV' full_name='Computer Vision and Pattern Recognition' is_active=True alt_name=None in_archive='cs' is_general=False description='Covers image processing, computer vision, pattern recognition, and scene understanding. Roughly includes material in ACM Subject Classes I.2.10, I.4, and I.5.'}
+}
 ```
 
 ## Acknowledgement
