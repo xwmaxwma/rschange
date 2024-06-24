@@ -5,9 +5,9 @@
 - Supported Methods
   - [STNet](https://ieeexplore.ieee.org/abstract/document/10219826) (ICME2023)
 
-  - DDLNet (ICME2024 oral)
+  - [DDLNet](https://arxiv.org/abs/2406.13606) (ICME2024 oral)
 
-  - DCPFormer (Under review, updated soon)
+  - [CDMask](https://arxiv.org/abs/2406.15320) (Under review, updated soon)
 	
   - CD-Mamba (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
 - Supported Datasets
@@ -156,6 +156,15 @@
       author={Xiaowen Ma and Jiawei Yang and Rui Che and Huanting Zhang and Wei Zhang},
       year={2024},
       eprint={2406.13606},
+      archivePrefix={arXiv},
+      primaryClass={id='cs.CV' full_name='Computer Vision and Pattern Recognition' is_active=True alt_name=None in_archive='cs' is_general=False description='Covers image processing, computer vision, pattern recognition, and scene understanding. Roughly includes material in ACM Subject Classes I.2.10, I.4, and I.5.'}
+}
+
+@misc{ma2024rethinking,
+      title={Rethinking Remote Sensing Change Detection With A Mask View}, 
+      author={Xiaowen Ma and Zhenkai Wu and Rongrong Lian and Wei Zhang and Siyang Song},
+      year={2024},
+      eprint={2406.15320},
       archivePrefix={arXiv},
       primaryClass={id='cs.CV' full_name='Computer Vision and Pattern Recognition' is_active=True alt_name=None in_archive='cs' is_general=False description='Covers image processing, computer vision, pattern recognition, and scene understanding. Roughly includes material in ACM Subject Classes I.2.10, I.4, and I.5.'}
 }
