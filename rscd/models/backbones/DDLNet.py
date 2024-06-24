@@ -346,9 +346,9 @@ class MultiSpectralDCTLayer(nn.Module):
         return dct_filter
 
 
-class SFNet3(nn.Module):
+class DDLNet(nn.Module):
     def __init__(self, num_class):
-        super(SFNet3, self).__init__()
+        super(DDLNet, self).__init__()
         channel_list = [64, 128, 256, 512]
         transform_feat = 128
 
