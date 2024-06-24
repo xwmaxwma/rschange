@@ -9,7 +9,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import sys
-from rscd.models.backbones.resnet import get_resnet18
 # from models.swintransformer import *
 import math
 
@@ -344,16 +343,8 @@ class MultiSpectralDCTLayer(nn.Module):
 
 
 class DDLNet(nn.Module):
-    def __init__(self, num_class):
+    def __init__(self, num_class, channel_list, transform_feat):
         super(DDLNet, self).__init__()
-        channel_list = [64, 128, 256, 512]
-        transform_feat = 128
-
-        self.backbone = get_resnet18()
-        # self.tff1 = TFF(channel_list[0], transform_feat)
-        # self.tff2 = TFF(channel_list[1], transform_feat)
-        # self.tff3 = TFF(channel_list[2], transform_feat)
-        # self.tff4 = TFF(channel_list[3], transform_feat)
 
 
         c2wh = dict([(64,56), (128,28), (256,14) ,(512,7)])
@@ -379,9 +370,8 @@ class DDLNet(nn.Module):
 
         self.catconv = conv_3x3(transform_feat*4, transform_feat)
     
-    def forward(self, xA, xB):
-        xA1, xA2, xA3, xA4 = self.backbone(xA)[1:]
-        xB1, xB2, xB3, xB4 = self.backbone(xB)[1:]
+    def forward(self, x):
+        xA1, xA2, xA3, xA4, xB1, xB2, xB3, xB4 = x
 
         # x1 = self.tff1(xA1, xB1)
         # x2 = self.tff2(xA2, xB2)
