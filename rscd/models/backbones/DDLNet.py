@@ -9,9 +9,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import sys
-sys.path.append(r'/home/xwma/zkwu/rschangedetection')
-sys.path.append(r'/home/xwma/zkwu/rschangedetection/rscd')
-from rscd.models.backbones.resnet2 import resnet18
 from rscd.models.backbones.resnet import get_resnet18
 # from models.swintransformer import *
 import math
@@ -431,7 +428,7 @@ class DDLNet(nn.Module):
 if __name__ == "__main__":
     xa = torch.randn(1, 3, 256, 256)
     xb = torch.randn(1, 3, 256, 256)
-    net = SFNet3(2)
+    net = DDLNet(2)
     out = net(xa, xb)
     # print(out.shape)
     import thop
