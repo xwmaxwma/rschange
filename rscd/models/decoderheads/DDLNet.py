@@ -343,7 +343,7 @@ class MultiSpectralDCTLayer(nn.Module):
 
 
 class DDLNet(nn.Module):
-    def __init__(self, num_class, channel_list, transform_feat):
+    def __init__(self, num_class, channel_list=[64, 128, 256, 512], transform_feat=128):
         super(DDLNet, self).__init__()
 
 
