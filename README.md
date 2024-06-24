@@ -22,6 +22,9 @@
   - Params and FLOPs counting
   - Class activation maps (Updated soon)
 
+## News
+- `2024/06/24`: CDMask has been submitted to Arxiv, see [here](https://arxiv.org/abs/2406.15320), and the official implementation of CDMask is available!
+
 ## Preparation
 
 - Environment preparation
