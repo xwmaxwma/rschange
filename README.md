@@ -1,3 +1,5 @@
+![cap](./cap.jpg)
+
 ## Introduction
 
 **rschange** is an open-source change detection toolbox, which is dedicated to reproducing and developing advanced methods for change detection of remote sensing images.
