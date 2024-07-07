@@ -1,3 +1,4 @@
+# Code is borrowed from https://github.com/fudan-zvg/SeaFormer
 import math
 import torch
 from torch import nn
@@ -527,7 +528,8 @@ def SeaFormer_B(pretrained=False, **kwargs):
         num_heads=model_cfgs['num_heads'],
         drop_path_rate=model_cfgs['drop_path_rate'])
 
-
+# download link of the pretrained backbone weight 
+# https://drive.google.com/drive/folders/1BrZU0339JAFpKsQf4kdS0EpeeFgrBvBJ?usp=drive_link
 @register_model
 def SeaFormer_L(pretrained=False, weights='rscd/models/backbones/review_pretrain/SeaFormer_L_cls_79.9.pth.tar', **kwargs):
     model_cfgs = dict(
