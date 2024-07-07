@@ -406,11 +406,11 @@ class DDLNet(nn.Module):
         # print(x444.shape)
         # print(x222.shape)
         x4_new = self.catconv(torch.cat([x444, x1_new, x2_new, x3_new], dim=1))
-        print(x4_new.shape)
+        # print(x4_new.shape)
         out = self.lightdecoder(x111, x222, x333, x4_new)
-        print(out.shape)
+        # print(out.shape)
         out = F.interpolate(out, scale_factor=4, mode="bilinear")
-        print(out.shape)
+        # print(out.shape)
         #return out
         return out
 
