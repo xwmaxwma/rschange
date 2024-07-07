@@ -31,8 +31,7 @@ model_config = dict(
         type = 'DDLNet',
         num_class = 2,
         channel_list = [64, 128, 256, 512],
-        transform_feat = 128,
-        layer_num = 4
+        transform_feat = 128
     )
 )
 loss_config = dict(
