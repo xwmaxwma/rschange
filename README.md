@@ -1,6 +1,6 @@
 ![cap](./cap.jpg)
 
-## Introduction
+## 📷 Introduction
 
 **rschange** is an open-source change detection toolbox, which is dedicated to reproducing and developing advanced methods for change detection of remote sensing images.
 
@@ -9,25 +9,36 @@
 
   - [DDLNet](https://arxiv.org/abs/2406.13606) (ICME2024 oral)
 
-  - [CDMask](https://arxiv.org/abs/2406.15320) (Under review, updated soon)
+  - [CDMask](https://arxiv.org/abs/2406.15320) (Under review)
 	
   - CD-Mamba (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
+  
+  - Other popular methods including 
+  
+    [BIT](https://ieeexplore.ieee.org/abstract/document/9491802?casa_token=ERmQ_XMsoXcAAAAA:LS9RWgxMQwA6QT3H4lTA2uj44iYRSXkYGqFXy3c_sTujSQRGr14wOH8h7xiKqYQftXNeXG5voBVJ8g) (TGRS2021),	[SNUNet](https://ieeexplore.ieee.org/abstract/document/9355573?casa_token=NAEi6I-AywwAAAAA:uQWgA3jLiaOThIibhZneEuskdI_sDwveSliJc4pWqYiKdMcfhOQ7dzgNxJVNVL9g3vya1Vw6H39_mw) (GRSL2021),	[ChangeFormer](https://ieeexplore.ieee.org/abstract/document/9883686?casa_token=A8uGOuuiaOoAAAAA:DQUwAvWmmEaR3XY7pmwMvI2TPl5nODPAEGiDwEotvbZI_81deQwmlG619R0HEFPKHlRurTP0kWeozA) (IGARSS2022), 
+  
+    [LGPNet](https://ieeexplore.ieee.org/abstract/document/9627698?casa_token=i-VH46OEnuIAAAAA:wgXT7tiUYOiS-_694aYKjdeO7lQQtHyayBXUQMqCM4nWZ-iJ5rrONql4n8vpupMTsVg9jstmHK3juQ)(TGRS2021),	[SARAS-Net](https://ojs.aaai.org/index.php/AAAI/article/view/26660) (AAAI2023)
+  
 - Supported Datasets
   - [LEVIR-CD](https://chenhao.in/LEVIR/)
   - [DSIFN-CD](https://github.com/GeoZcx/A-deeply-supervised-image-fusion-network-for-change-detection-in-remote-sensing-images/tree/master/dataset)
   - [WHU-CD](http://gpcv.whu.edu.cn/data/building_dataset.html)
   - [CLCD](https://github.com/liumency/CropLand-CD)
   - [SYSU-CD](https://github.com/liumency/SYSU-CD)
+  
 - Supported Tools
   - Training
   - Testing
   - Params and FLOPs counting
-  - Class activation maps (Updated soon)
+  - Class activation maps
 
-## News
+## 🔥 News
+
+- `2024/07/14`: Class activation maps and some other popular methods (BIT, SNUNet, ChangeFormer, LGPNet, SARAS-Net) are now supported.
+
 - `2024/06/24`: CDMask has been submitted to Arxiv, see [here](https://arxiv.org/abs/2406.15320), and the official implementation of CDMask is available!
 
-## Preparation
+## 🔐 Preparation
 
 - Environment preparation
 
@@ -50,7 +61,7 @@
   
   Note: We also provide the pre-processed data, which can be downloaded at this [link](https://drive.google.com/drive/folders/1zxhJ7v3UPgNsKkdvkYCOW7DdKDAAy_ll?usp=sharing)
   
-## Folder Structure
+## 📒 Folder Structure
 
   Prepare the following folders to organize this repo:
 
@@ -115,11 +126,10 @@
                   │       └── label.png
                   ├── val (the same with train)
                   └── test(the same with train)
-  
-  
+
   
 
-## Use example
+## 📚 Use example
 
 - Training
 
@@ -142,12 +152,21 @@
   python tools/params_flops.py --size 256
   ```
 
+
+- Class activation maps
+
+  ```shell
+  python tools/grad_cam_CNN.py -c configs/cdmask.py
+  ```
+
   
 
-## Citation
+## 🌟 Citation
+
+If you are interested in our work, please consider giving a 🌟 and citing our work below. We will update **rschange** regularly.
 
 ```
-@inproceedings{ma2023stnet,
+@inproceedings{stnet,
   title={STNet: Spatial and Temporal feature fusion network for change detection in remote sensing images},
   author={Ma, Xiaowen and Yang, Jiawei and Hong, Tingfeng and Ma, Mengting and Zhao, Ziyan and Feng, Tian and Zhang, Wei},
   booktitle={2023 IEEE International Conference on Multimedia and Expo (ICME)},
@@ -156,26 +175,22 @@
   organization={IEEE}
 }
 
-@misc{ma2024ddlnet,
-      title={DDLNet: Boosting Remote Sensing Change Detection with Dual-Domain Learning}, 
-      author={Xiaowen Ma and Jiawei Yang and Rui Che and Huanting Zhang and Wei Zhang},
-      year={2024},
-      eprint={2406.13606},
-      archivePrefix={arXiv},
-      primaryClass={id='cs.CV' full_name='Computer Vision and Pattern Recognition' is_active=True alt_name=None in_archive='cs' is_general=False description='Covers image processing, computer vision, pattern recognition, and scene understanding. Roughly includes material in ACM Subject Classes I.2.10, I.4, and I.5.'}
+@article{ddlnet,
+  title={DDLNet: Boosting Remote Sensing Change Detection with Dual-Domain Learning},
+  author={Ma, Xiaowen and Yang, Jiawei and Che, Rui and Zhang, Huanting and Zhang, Wei},
+  journal={arXiv preprint arXiv:2406.13606},
+  year={2024}
 }
 
-@misc{ma2024rethinking,
-      title={Rethinking Remote Sensing Change Detection With A Mask View}, 
-      author={Xiaowen Ma and Zhenkai Wu and Rongrong Lian and Wei Zhang and Siyang Song},
-      year={2024},
-      eprint={2406.15320},
-      archivePrefix={arXiv},
-      primaryClass={id='cs.CV' full_name='Computer Vision and Pattern Recognition' is_active=True alt_name=None in_archive='cs' is_general=False description='Covers image processing, computer vision, pattern recognition, and scene understanding. Roughly includes material in ACM Subject Classes I.2.10, I.4, and I.5.'}
+@article{cdmask,
+  title={Rethinking Remote Sensing Change Detection With A Mask View},
+  author={Ma, Xiaowen and Wu, Zhenkai and Lian, Rongrong and Zhang, Wei and Song, Siyang},
+  journal={arXiv preprint arXiv:2406.15320},
+  year={2024}
 }
 ```
 
-## Acknowledgement
+## 💡 Acknowledgement
 
 Thanks to previous open-sourced repo:
 

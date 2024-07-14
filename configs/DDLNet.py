@@ -7,8 +7,9 @@ save_last = True
 check_val_every_n_epoch = 1
 logging_interval = 'epoch'
 resume_ckpt_path = None
-monitor1 = 'val_change_f1'
-monitor2 = 'test_change_f1'
+monitor_val = 'val_change_f1'
+monitor_test = ['test_change_f1']
+argmax = True
 
 test_ckpt_path = None
 
@@ -24,8 +25,8 @@ ignore_index = 255
 ######################### model_config #########################
 model_config = dict(
     backbone = dict(
-        type = 'Resnet18'
-        # type = 'Swin'
+        type = 'Base',
+        name = 'Resnet18'
     ),
     decoderhead = dict(
         type = 'DDLNet',

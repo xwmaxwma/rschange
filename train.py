@@ -17,15 +17,30 @@ from rscd.optimizers import build_optimizer
 from rscd.losses import build_loss
 from utils.config import Config
 
-import os
+from torch.autograd import Variable
+
 import sys
 sys.path.append('rscd')
 
 seed_everything(1234, workers=True)
 
+import numpy as np
+import os
+
+def resize_label(label, size):
+
+    label = np.expand_dims(label,axis=0)
+    label_resized = np.zeros((1,label.shape[1],size[0],size[1]))
+    interp = nn.Upsample(size=(size[0], size[1]),mode='bilinear')
+
+    labelVar = Variable(torch.from_numpy(label).float())  
+    label_resized[:, :,:,:] = interp(labelVar).data.numpy()
+    label_resized = np.array(label_resized, dtype=np.int32)
+    return torch.from_numpy(np.squeeze(label_resized,axis=0)).float()
+
 def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
-    parser.add_argument("-c", "--config", type=str, default="configs/STNet.py")
+    parser.add_argument("-c", "--config", type=str, default="configs/cdmask.py")
     return parser.parse_args()
 
 class myTrain(LightningModule):
@@ -37,7 +52,7 @@ class myTrain(LightningModule):
         self.net = build_model(cfg.model_config)
         self.loss = build_loss(cfg.loss_config)
 
-        self.loss.to("cuda")
+        self.loss.to('cuda:{}'.format(cfg.gpus[0]))
         
         metric_cfg1 = cfg.metric_cfg1
         metric_cfg2 = cfg.metric_cfg2
@@ -60,7 +75,7 @@ class myTrain(LightningModule):
         self.test_f1 = torchmetrics.F1Score(**metric_cfg2)
         self.test_iou=torchmetrics.JaccardIndex(**metric_cfg2)
 
-        self.test_max_f1 = -1
+        self.test_max_f1 = [0 for _ in range(10)]
 
         self.test_loader = build_dataloader(cfg.dataset_config, mode='test')
 
@@ -80,7 +95,7 @@ class myTrain(LightningModule):
         loader = build_dataloader(self.cfg.dataset_config, mode='val')
         return loader
 
-    def output(self, metrics, total_metrics, mode):
+    def output(self, metrics, total_metrics, mode, test_idx=0, test_value=None):
         result_table = prettytable.PrettyTable()
         result_table.field_names = ['Class', 'OA', 'Precision', 'Recall', 'F1_Score', 'IOU']
 
@@ -105,13 +120,18 @@ class myTrain(LightningModule):
             base_dir = os.path.join('work_dirs', cfg.exp_name)
 
         if mode == 'test':
-            file_name = os.path.join(base_dir, "test_metrics_rest.txt") 
-            if metrics[2][1] > self.test_max_f1:
-                self.test_max_f1 = metrics[2][1]
-                file_name = os.path.join(base_dir, "test_metrics_max.txt") 
+            if self.cfg.argmax:
+                file_name = os.path.join(base_dir, "test_metrics_{}.txt".format(test_idx)) 
+                if metrics[2][1] > self.test_max_f1[test_idx]:
+                    self.test_max_f1[test_idx] = metrics[2][1]
+                    file_name = os.path.join(base_dir, "test_max_metrics_{}.txt".format(test_idx))
+            else:
+                file_name = os.path.join(base_dir, "test_metrics_{}_{}.txt".format(test_idx, str(test_value))) 
+                if metrics[2][1] > self.test_max_f1[test_idx]:
+                    self.test_max_f1[test_idx] = metrics[2][1]
+                    file_name = os.path.join(base_dir, "test_max_metrics_{}_{}.txt".format(test_idx, '%.1f' % test_value))
         else:
             file_name = os.path.join(base_dir, "train_metrics.txt") 
-            
         f = open(file_name,"a")
         f.write('epoch:{}/{} {}\n'.format(self.current_epoch, self.cfg.epoch, mode))
         f.write(str(result_table)+'\n')
@@ -121,9 +141,20 @@ class myTrain(LightningModule):
         imgA, imgB, mask = batch[0], batch[1], batch[2]
         preds = self(imgA, imgB)
 
-        loss = self.loss(preds, mask)
-                    
-        pred = preds.argmax(dim=1)
+        if self.cfg.net == 'SARASNet':
+            mask = Variable(resize_label(mask.data.cpu().numpy(), \
+                                    size=preds.data.cpu().numpy().shape[2:]).to('cuda')).long()
+            param = 1  # This parameter is balance precision and recall to get higher F1-score
+            preds[:,1,:,:] = preds[:,1,:,:] + param 
+
+        if self.cfg.argmax:
+            loss = self.loss(preds, mask)
+            pred = preds.argmax(dim=1)
+        else:
+            loss = self.loss(preds[1], mask)
+            pred = preds[0]
+            pred = pred > 0.5
+            pred.squeeze_(1)
 
         self.tr_oa(pred, mask)
         self.tr_prec(pred, mask)
@@ -161,9 +192,21 @@ class myTrain(LightningModule):
     def validation_step(self, batch, batch_idx):
         imgA, imgB, mask = batch[0], batch[1], batch[2]
         preds = self(imgA, imgB)
-        
-        loss = self.loss(preds, mask)
-        pred = preds.argmax(dim=1)
+
+        if self.cfg.net == 'SARASNet':
+            mask = Variable(resize_label(mask.data.cpu().numpy(), \
+                                    size=preds.data.cpu().numpy().shape[2:]).to('cuda')).long()
+            param = 1  # This parameter is balance precision and recall to get higher F1-score
+            preds[:,1,:,:] = preds[:,1,:,:] + param 
+
+        if self.cfg.argmax:
+            loss = self.loss(preds, mask)
+            pred = preds.argmax(dim=1)
+        else:
+            loss = self.loss(preds[1], mask)
+            pred = preds[0]
+            pred = pred > 0.5
+            pred.squeeze_(1)
 
         self.val_oa(pred, mask)
         self.val_prec(pred, mask)
@@ -187,7 +230,7 @@ class myTrain(LightningModule):
                'val_miou': np.mean([item.cpu() for item in metrics[3]])}
         
         self.output(metrics, log, 'val')
-
+        
         for key, value in zip(log.keys(), log.values()):
             self.log(key, value, on_step=False,on_epoch=True,prog_bar=True)
         self.log('val_change_f1', metrics[2][1], on_step=False,on_epoch=True,prog_bar=True)
@@ -198,15 +241,29 @@ class myTrain(LightningModule):
         self.val_f1.reset()
         self.val_iou.reset()
 
-        res1 = self.test()
+        for idx in range(0, len(self.cfg.monitor_test), 1):
+            if self.cfg.argmax:
+                self.log(self.cfg.monitor_test[idx], self.test(idx), on_step=False,on_epoch=True,prog_bar=True)
+            else:
+                t = 0.2 + 0.1 * idx
+                self.log(self.cfg.monitor_test[idx], self.test(idx, t), on_step=False,on_epoch=True,prog_bar=True)
 
-        self.log('test_change_f1', res1, on_step=False,on_epoch=True,prog_bar=True)
-
-    def test(self):
+    def test(self, idx, value = None):
         for input in tqdm(self.test_loader):
             raw_predictions, mask_test = self(input[0].cuda(cfg.gpus[0]), input[1].cuda(cfg.gpus[0])), input[2].cuda(cfg.gpus[0])
 
-            pred_test = raw_predictions.argmax(dim=1)
+            if self.cfg.net == 'SARASNet':
+                mask_test = Variable(resize_label(mask_test.data.cpu().numpy(), \
+                                        size=raw_predictions.data.cpu().numpy().shape[2:]).to('cuda')).long()
+                param = 1  # This parameter is balance precision and recall to get higher F1-score
+                raw_predictions[:,1,:,:] = raw_predictions[:,1,:,:] + param 
+
+            if self.cfg.argmax:
+                pred_test = raw_predictions.argmax(dim=1)
+            else:
+                raw_prediction = raw_predictions[0]
+                pred_test = raw_prediction > value
+                pred_test.squeeze_(1)
 
             self.test_oa(pred_test, mask_test)
             self.test_iou(pred_test, mask_test)
@@ -225,7 +282,7 @@ class myTrain(LightningModule):
             'test_f1': np.mean([item.cpu() for item in metrics_test[2]]),
             'test_miou': np.mean([item.cpu() for item in metrics_test[3]])}
         
-        self.output(metrics_test, log, 'test')
+        self.output(metrics_test, log, 'test', idx, value)
         
         self.test_oa.reset()
         self.test_prec.reset()
@@ -235,7 +292,7 @@ class myTrain(LightningModule):
 
         return metrics_test[2][1]
 
-if __name__ == "__main__":  
+if __name__ == "__main__":
     args = get_args()
     cfg = Config.fromfile(args.config)
     logger = TensorBoardLogger(save_dir = "work_dirs",
@@ -247,25 +304,26 @@ if __name__ == "__main__":
 
     model = myTrain(cfg, log_dir)
     
-    lr_monitor=LearningRateMonitor(logging_interval = cfg.logging_interval)
-
-    ckpt_cb1 = ModelCheckpoint(dirpath = f'{log_dir}/ckpts/val',
-                              filename = '{val_change_f1:.4f}-{epoch:d}',
-                              monitor = cfg.monitor1,
-                              mode = 'max',
-                              save_top_k = cfg.save_top_k,
-                              save_last=True)
-
-    ckpt_cb2 = ModelCheckpoint(dirpath = f'{log_dir}/ckpts/test',
-                              filename = '{test_change_f1:.4f}-{epoch:d}',
-                              monitor = cfg.monitor2,
-                              mode = 'max',
-                              save_top_k = cfg.save_top_k,
-                              save_last=True)
-    
     pbar = TQDMProgressBar(refresh_rate=1)
+    lr_monitor=LearningRateMonitor(logging_interval = cfg.logging_interval)
+    callbacks = [pbar, lr_monitor]
 
-    callbacks = [ckpt_cb1, ckpt_cb2, pbar, lr_monitor]
+    ckpt_cb = ModelCheckpoint(dirpath = f'{log_dir}/ckpts/val',
+                            filename = '{' + cfg.monitor_val + ':.4f}' + '-{epoch:d}',
+                            monitor = cfg.monitor_val,
+                            mode = 'max',
+                            save_top_k = cfg.save_top_k,
+                            save_last=True)
+    callbacks.append(ckpt_cb)
+
+    for m_test in cfg.monitor_test:
+        ckpt_cb = ModelCheckpoint(dirpath = f'{log_dir}/ckpts/test/{m_test}',
+                                filename = '{' + m_test + ':.4f}' + '-{epoch:d}',
+                                monitor = m_test,
+                                mode = 'max',
+                                save_top_k = cfg.save_top_k,
+                                save_last=True)
+        callbacks.append(ckpt_cb)
     
     trainer = Trainer(max_epochs = cfg.epoch,
                     #   precision='16-mixed',

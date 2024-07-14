@@ -7,16 +7,17 @@ save_last = True
 check_val_every_n_epoch = 1
 logging_interval = 'epoch'
 resume_ckpt_path = None
-monitor = ['val_change_f1',
-           'test_change_f1_0',
-           'test_change_f1_1',
-           'test_change_f1_2',
-           'test_change_f1_3',
-           'test_change_f1_4',
-           'test_change_f1_5',
-           'test_change_f1_6']
+monitor_val = 'val_change_f1'
+monitor_test = ['test_change_f1_0',
+                'test_change_f1_1',
+                'test_change_f1_2',
+                'test_change_f1_3',
+                'test_change_f1_4',
+                'test_change_f1_5',
+                'test_change_f1_6']
+argmax = False
 
-test_ckpt_path = 'data/test_change_f1_4=0.7855-epoch=117.ckpt'
+test_ckpt_path = r'work_dirs\CLCD_BS4_epoch200\maskcd\version_0\ckpts\test\test_change_f1_0\test_change_f1_4=0.7855-epoch=117.ckpt'
 
 exp_name = 'CLCD_BS4_epoch{}/{}'.format(epoch, net)
 
@@ -30,11 +31,11 @@ ignore_index = 255
 ######################### model_config #########################
 model_config = dict(
     backbone = dict(
-        type = 'Seaformer',
-        channels = [64, 128, 192, 256]
+        type = 'Base',
+        name = 'Seaformer'
     ),
     decoderhead = dict(
-        type = 'MaskFormerModel_sea_ourDH',
+        type = 'CDMask',
         channels = [64, 128, 192, 256],
         num_classes = num_class - 1,
         num_queries = 5,

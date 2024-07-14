@@ -157,7 +157,7 @@ class Resnet(nn.Module):
         x3 = self.layer3(x2)
         x4 = self.layer4(x3)
         
-        outs = [x, x1, x2, x3, x4]
+        outs = [x1, x2, x3, x4]
 
         return tuple(outs)
 

@@ -237,8 +237,9 @@ class STNet(nn.Module):
         self.lightdecoder = LightDecoder(transform_feat, num_class, layer_num)
     
     def forward(self, x):
-
-        xA1, xA2, xA3, xA4, xB1, xB2, xB3, xB4 = x
+        featuresA, featuresB = x
+        xA1, xA2, xA3, xA4 = featuresA
+        xB1, xB2, xB3, xB4 = featuresB
 
         x1 = self.tff1(xA1, xB1)
         x2 = self.tff2(xA2, xB2)

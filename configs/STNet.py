@@ -7,10 +7,11 @@ save_last = True
 check_val_every_n_epoch = 1
 logging_interval = 'epoch'
 resume_ckpt_path = None
-monitor1 = 'val_change_f1'
-monitor2 = 'test_change_f1'
+monitor_val = 'val_change_f1'
+monitor_test = ['test_change_f1']
+argmax = True
 
-test_ckpt_path = None
+test_ckpt_path = r'work_dirs\CLCD_BS4_epoch200\stnet\version_0\ckpts\test\test_change_f1\test_change_f1=0.5355-epoch=0.ckpt'
 
 exp_name = 'CLCD_BS4_epoch200/{}'.format(net)
 
@@ -24,16 +25,14 @@ ignore_index = 255
 ######################### model_config #########################
 model_config = dict(
     backbone = dict(
-        type = 'Resnet18'
-        # type = 'Swin'
+        type = 'Base',
+        name = 'Resnet18'
     ),
     decoderhead = dict(
         type = 'STNet',
         num_class = 2,
         channel_list = [64, 128, 256, 512],
         transform_feat = 128,
-        # channel_list = [96, 192, 384, 768],
-        # transform_feat = 192,
         layer_num = 4
     )
 )

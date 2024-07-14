@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from rscd.losses.loss_func import CELoss, FocalLoss, dice_loss
+from rscd.losses.mask2formerLoss import Mask2formerLoss
 
 class myLoss(nn.Module):
     def __init__(self, param, loss_name=['CELoss'], loss_weight=[1.0], **kwargs):

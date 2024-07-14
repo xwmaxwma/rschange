@@ -371,12 +371,9 @@ class DDLNet(nn.Module):
         self.catconv = conv_3x3(transform_feat*4, transform_feat)
     
     def forward(self, x):
-        xA1, xA2, xA3, xA4, xB1, xB2, xB3, xB4 = x
-
-        # x1 = self.tff1(xA1, xB1)
-        # x2 = self.tff2(xA2, xB2)
-        # x3 = self.tff3(xA3, xB3)
-        # x4 = self.tff4(xA4, xB4)
+        featuresA, featuresB = x
+        xA1, xA2, xA3, xA4 = featuresA
+        xB1, xB2, xB3, xB4 = featuresB
 
         x1 = self.fca1(xA1)
         x2 = self.fca2(xA2)

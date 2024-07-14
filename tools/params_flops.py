@@ -4,7 +4,7 @@ from train import *
 
 def parse_args():
     parser = argparse.ArgumentParser(description='count params and flops')
-    parser.add_argument("-c", "--config", type=str, default="configs/STNet.py")
+    parser.add_argument("-c", "--config", type=str, default="configs/cdmask.py")
     parser.add_argument("--size", type=int, default=256)
     args = parser.parse_args()
     return args

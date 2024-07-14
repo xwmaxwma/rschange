@@ -16,13 +16,14 @@ from tools.mask_convert import mask_save
 
 def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
-    parser.add_argument("-c", "--config", type=str, default="configs/STNet.py")
+    parser.add_argument("-c", "--config", type=str, default="configs/cdmask.py")
     parser.add_argument("--ckpt", type=str, default=None)
     parser.add_argument("--output_dir", type=str, default=None)
     return parser.parse_args()
 
 if __name__ == "__main__":
     args = get_args()
+    cfg = Config.fromfile(args.config)
 
     ckpt = args.ckpt
     if ckpt is None:
@@ -35,7 +36,6 @@ if __name__ == "__main__":
         base_dir = os.path.dirname(ckpt)
     masks_output_dir = os.path.join(base_dir, "mask_rgb") 
 
-    cfg = Config.fromfile(args.config)
     model = myTrain.load_from_checkpoint(ckpt, cfg = cfg)
     model = model.to('cuda')
 
@@ -56,7 +56,19 @@ if __name__ == "__main__":
         for input in tqdm(test_loader):
 
             raw_predictions, mask, img_id = model(input[0].cuda(), input[1].cuda()), input[2].cuda(), input[3]
-            pred = raw_predictions.argmax(dim=1)
+
+            if cfg.net == 'SARASNet':
+                mask = Variable(resize_label(mask.data.cpu().numpy(), \
+                                        size=raw_predictions.data.cpu().numpy().shape[2:]).to('cuda')).long()
+                param = 1  # This parameter is balance precision and recall to get higher F1-score
+                raw_predictions[:,1,:,:] = raw_predictions[:,1,:,:] + param 
+                
+            if cfg.argmax:
+                pred = raw_predictions.argmax(dim=1)
+            else:
+                raw_predictions = raw_predictions[0]
+                pred = raw_predictions > 0.5
+                pred.squeeze_(1)
 
             test_oa(pred, mask)
             test_iou(pred, mask)
