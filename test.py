@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
 from tqdm import tqdm
 import prettytable
 import time
@@ -16,7 +15,7 @@ from tools.mask_convert import mask_save
 
 def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
-    parser.add_argument("-c", "--config", type=str, default="configs/cdmask.py")
+    parser.add_argument("-c", "--config", type=str, default="configs\AFCF3DNet.py")
     parser.add_argument("--ckpt", type=str, default=None)
     parser.add_argument("--output_dir", type=str, default=None)
     return parser.parse_args()
@@ -36,7 +35,7 @@ if __name__ == "__main__":
         base_dir = os.path.dirname(ckpt)
     masks_output_dir = os.path.join(base_dir, "mask_rgb") 
 
-    model = myTrain.load_from_checkpoint(ckpt, cfg = cfg)
+    model = myTrain.load_from_checkpoint(ckpt, map_location={'cuda:1':'cuda:0'}, cfg = cfg)
     model = model.to('cuda')
 
     model.eval()
@@ -66,9 +65,13 @@ if __name__ == "__main__":
             if cfg.argmax:
                 pred = raw_predictions.argmax(dim=1)
             else:
-                raw_predictions = raw_predictions[0]
-                pred = raw_predictions > 0.5
-                pred.squeeze_(1)
+                if cfg.net == 'maskcd':
+                    pred = raw_predictions[0]
+                    pred = pred > 0.5
+                    pred.squeeze_(1)
+                else:
+                    pred = raw_predictions.squeeze(1)
+                    pred = pred > 0.5
 
             test_oa(pred, mask)
             test_iou(pred, mask)
