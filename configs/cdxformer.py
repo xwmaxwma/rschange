@@ -1,4 +1,4 @@
-net = 'test'
+net = 'CDXFormer'
 ######################## base_config #########################
 epoch = 200
 gpus = [0]
@@ -11,7 +11,7 @@ monitor_val = 'val_change_f1'
 monitor_test = ['test_change_f1']
 argmax = True
 
-test_ckpt_path = r'work_dirs\CLCD_BS4_epoch200\cdxlstm_fusion_sea_axial\version_0\ckpts\test\test_change_f1\test_change_f1=0.7873-epoch=90.ckpt'
+test_ckpt_path = None
 
 exp_name = 'CLCD_BS4_epoch{}/{}'.format(epoch, net)
 
