@@ -1,7 +1,5 @@
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
 from pytorch_lightning import LightningModule, Trainer, seed_everything
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint, TQDMProgressBar
 from pytorch_lightning.loggers import TensorBoardLogger
@@ -40,7 +38,7 @@ def resize_label(label, size):
 
 def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
-    parser.add_argument("-c", "--config", type=str, default="configs/cdmask.py")
+    parser.add_argument("-c", "--config", type=str, default="configs\cdmask.py")
     return parser.parse_args()
 
 class myTrain(LightningModule):
@@ -151,10 +149,15 @@ class myTrain(LightningModule):
             loss = self.loss(preds, mask)
             pred = preds.argmax(dim=1)
         else:
-            loss = self.loss(preds[1], mask)
-            pred = preds[0]
-            pred = pred > 0.5
-            pred.squeeze_(1)
+            if self.cfg.net == 'maskcd':
+                loss = self.loss(preds[1], mask)
+                pred = preds[0]
+                pred = pred > 0.5
+                pred.squeeze_(1)
+            else:
+                pred = preds.squeeze(1)
+                loss = self.loss(pred, mask)
+                pred = pred > 0.5
 
         self.tr_oa(pred, mask)
         self.tr_prec(pred, mask)
@@ -203,10 +206,15 @@ class myTrain(LightningModule):
             loss = self.loss(preds, mask)
             pred = preds.argmax(dim=1)
         else:
-            loss = self.loss(preds[1], mask)
-            pred = preds[0]
-            pred = pred > 0.5
-            pred.squeeze_(1)
+            if self.cfg.net == 'maskcd':
+                loss = self.loss(preds[1], mask)
+                pred = preds[0]
+                pred = pred > 0.5
+                pred.squeeze_(1)
+            else:
+                pred = preds.squeeze(1)
+                loss = self.loss(pred, mask)
+                pred = pred > 0.5
 
         self.val_oa(pred, mask)
         self.val_prec(pred, mask)
@@ -261,9 +269,13 @@ class myTrain(LightningModule):
             if self.cfg.argmax:
                 pred_test = raw_predictions.argmax(dim=1)
             else:
-                raw_prediction = raw_predictions[0]
-                pred_test = raw_prediction > value
-                pred_test.squeeze_(1)
+                if self.cfg.net == 'maskcd':
+                    raw_prediction = raw_predictions[0]
+                    pred_test = raw_prediction > value
+                    pred_test.squeeze_(1)
+                else:
+                    pred_test = raw_predictions.squeeze(1)
+                    pred_test = pred_test > 0.5
 
             self.test_oa(pred_test, mask_test)
             self.test_iou(pred_test, mask_test)
