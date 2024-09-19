@@ -12,12 +12,14 @@
   - [CDMask](https://arxiv.org/abs/2406.15320) (Under review)
 	
   - CD-Mamba (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
+ 
+  - CDXFormer (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
   
   - Other popular methods including 
   
     [BIT](https://ieeexplore.ieee.org/abstract/document/9491802?casa_token=ERmQ_XMsoXcAAAAA:LS9RWgxMQwA6QT3H4lTA2uj44iYRSXkYGqFXy3c_sTujSQRGr14wOH8h7xiKqYQftXNeXG5voBVJ8g) (TGRS2021),	[SNUNet](https://ieeexplore.ieee.org/abstract/document/9355573?casa_token=NAEi6I-AywwAAAAA:uQWgA3jLiaOThIibhZneEuskdI_sDwveSliJc4pWqYiKdMcfhOQ7dzgNxJVNVL9g3vya1Vw6H39_mw) (GRSL2021),	[ChangeFormer](https://ieeexplore.ieee.org/abstract/document/9883686?casa_token=A8uGOuuiaOoAAAAA:DQUwAvWmmEaR3XY7pmwMvI2TPl5nODPAEGiDwEotvbZI_81deQwmlG619R0HEFPKHlRurTP0kWeozA) (IGARSS2022), 
   
-    [LGPNet](https://ieeexplore.ieee.org/abstract/document/9627698?casa_token=i-VH46OEnuIAAAAA:wgXT7tiUYOiS-_694aYKjdeO7lQQtHyayBXUQMqCM4nWZ-iJ5rrONql4n8vpupMTsVg9jstmHK3juQ)(TGRS2021),	[SARAS-Net](https://ojs.aaai.org/index.php/AAAI/article/view/26660) (AAAI2023)
+    [LGPNet](https://ieeexplore.ieee.org/abstract/document/9627698?casa_token=i-VH46OEnuIAAAAA:wgXT7tiUYOiS-_694aYKjdeO7lQQtHyayBXUQMqCM4nWZ-iJ5rrONql4n8vpupMTsVg9jstmHK3juQ)(TGRS2021),	[SARAS-Net](https://ojs.aaai.org/index.php/AAAI/article/view/26660) (AAAI2023),   [USSFCNet](https://ieeexplore.ieee.org/document/10081023) (TGRS2023)
   
 - Supported Datasets
   - [LEVIR-CD](https://chenhao.in/LEVIR/)
