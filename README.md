@@ -158,7 +158,7 @@
 - Class activation maps
 
   ```shell
-  python tools/grad_cam_CNN.py -c configs/cdmask.py
+  python tools/grad_cam_CNN.py -c configs/cdxformer.py --layer=model.net.decoderhead.LHBlock2.mlp_l
   ```
 
   
