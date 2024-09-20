@@ -13,11 +13,14 @@ def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
     parser.add_argument("-c", "--config", type=str, default="configs\cdxformer.py")
     parser.add_argument("--output_dir", default=None)
-    parser.add_argument("--layer", default="model.net.decoderhead.LHBlock2.mlp_l")
+    parser.add_argument("--layer", default=None)
     return parser.parse_args()
 
 def main():
     args = get_args()
+
+    if args.layer == None:
+        raise NameError("Please ensure the parameter '--layer' is not None!\n e.g. --layer=model.net.decoderhead.LHBlock2.mlp_l")
     
     cfg = Config.fromfile(args.config)
 
