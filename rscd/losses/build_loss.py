@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from rscd.losses.loss_func import CELoss, FocalLoss, dice_loss
+from rscd.losses.loss_func import CELoss, FocalLoss, dice_loss, BCEDICE_loss
 from rscd.losses.mask2formerLoss import Mask2formerLoss
 
 class myLoss(nn.Module):
