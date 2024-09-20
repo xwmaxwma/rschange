@@ -11,8 +11,9 @@ from train import *
 
 def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
-    parser.add_argument("-c", "--config", type=str, default="configs/cdmask.py")
+    parser.add_argument("-c", "--config", type=str, default="configs\cdxformer.py")
     parser.add_argument("--output_dir", default=None)
+    parser.add_argument("--layer", default="model.net.decoderhead.LHBlock2.mlp_l")
     return parser.parse_args()
 
 def main():
@@ -29,16 +30,17 @@ def main():
         base_dir = args.output_dir
     else:
         base_dir = os.path.dirname(cfg.test_ckpt_path)
-    gradcam_output_dir = os.path.join(base_dir, "grad_cam") 
-    assert not os.path.exists(gradcam_output_dir)
+    gradcam_output_dir = os.path.join(base_dir, "grad_cam", args.layer) 
+    if os.path.exists(gradcam_output_dir):
+        raise NameError("Please ensure gradcam_output_dir does not exist!")
     
     os.makedirs(gradcam_output_dir)
 
     for input in tqdm(test_loader):
-        target_layers = [model.net.decoderhead.tff4.catconvA] # name of the network layer
+        target_layers = [eval(args.layer)] # name of the network layer
         mask, img_id =  input[2].cuda(), input[3]
 
-        cam = GradCAM(model=model.net, target_layers=target_layers, use_cuda=True)
+        cam = GradCAM(cfg, model=model.net, target_layers=target_layers, use_cuda=True)
         target_category = 1  # tabby, tabby cat
 
         grayscale_cam_all = cam(input_tensor=(input[0], input[1]), target_category=target_category)
