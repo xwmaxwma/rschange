@@ -52,10 +52,12 @@ class ActivationsAndGradients:
 
 class GradCAM:
     def __init__(self,
+                 cfg,
                  model,
                  target_layers,
                  reshape_transform=None,
                  use_cuda=False):
+        self.cfg = cfg
         self.model = model.eval()
         self.target_layers = target_layers
         self.reshape_transform = reshape_transform
@@ -136,18 +138,21 @@ class GradCAM:
             y = y.cuda()
 
         # 正向传播得到网络输出logits(未经过softmax)
-        o, outputs = self.activations_and_grads(x, y)
-        mask_cls_results = outputs["pred_logits"]
-        mask_pred_results = outputs["pred_masks"]
-        mask_pred_results = F.interpolate(
-            mask_pred_results,
-            scale_factor=(4,4),
-            mode="bilinear",
-            align_corners=False,
-        )
-        mask_cls = F.softmax(mask_cls_results, dim=-1)[...,1:]
-        mask_pred = mask_pred_results.sigmoid()  
-        output = torch.einsum("bqc,bqhw->bchw", mask_cls, mask_pred)
+        if self.cfg.net == 'cdmask':
+            o, outputs = self.activations_and_grads(x, y)
+            mask_cls_results = outputs["pred_logits"]
+            mask_pred_results = outputs["pred_masks"]
+            mask_pred_results = F.interpolate(
+                mask_pred_results,
+                scale_factor=(4,4),
+                mode="bilinear",
+                align_corners=False,
+            )
+            mask_cls = F.softmax(mask_cls_results, dim=-1)[...,1:]
+            mask_pred = mask_pred_results.sigmoid()  
+            output = torch.einsum("bqc,bqhw->bchw", mask_cls, mask_pred)
+        else:
+            output = self.activations_and_grads(x, y)
 
         if isinstance(target_category, int):
             target_category = [target_category] * x.size(0)
