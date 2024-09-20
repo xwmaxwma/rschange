@@ -25,15 +25,11 @@ ignore_index = 255
 ######################### model_config #########################
 model_config = dict(
     backbone = dict(
-        # type = 'Base',
-        # name = 'efficientformerv2',
-        # resolution = 512
         type = 'Base',
         name = 'Seaformer'
     ),
     decoderhead = dict(
         type = 'CDXLSTM',
-        # channels = [40, 80, 192, 384]
         channels = [64, 128, 192, 256]
     )
 )
