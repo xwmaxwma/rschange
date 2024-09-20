@@ -12,7 +12,7 @@ monitor_val = 'val_change_f1'
 monitor_test = ['test_change_f1']
 argmax = False
 
-test_ckpt_path = r'work_dirs\CLCD_BS4_epoch200\AFCF3DNet\version_0\ckpts\test\test_change_f1\test_change_f1=0.7692-epoch=160.ckpt'
+test_ckpt_path = None
 
 exp_name = 'CLCD_BS4_epoch200/{}'.format(net)
 
