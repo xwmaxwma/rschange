@@ -98,6 +98,24 @@ class dice_loss(nn.Module):
         dice_loss = (2. * intersection / (cardinality + self.eps)).mean()
         return (1 - dice_loss)
 
+class BCEDICE_loss(nn.Module):
+    def __init__(self):
+        super(BCEDICE_loss, self).__init__()
+        self.bce = torch.nn.BCELoss()
+    
+    def forward(self, target, true):
+        
+        bce_loss = self.bce(target, true.float())
+
+        true_u = true.unsqueeze(1)
+        target_u = target.unsqueeze(1)
+
+        inter = (true * target).sum()
+        eps = 1e-7
+        dice_loss = (2 * inter + eps) / (true.sum() + target.sum() + eps)
+
+        return bce_loss + 1 - dice_loss
+
 if __name__ == "__main__":
     predict = torch.randn(4, 2, 10, 10)
     target = torch.randint(low=0,high=2,size=[4, 10, 10])
