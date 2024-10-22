@@ -177,12 +177,15 @@ If you are interested in our work, please consider giving a 🌟 and citing our 
   organization={IEEE}
 }
 
-@article{ddlnet,
-  title={DDLNet: Boosting Remote Sensing Change Detection with Dual-Domain Learning},
+@INPROCEEDINGS{ddlnet,
   author={Ma, Xiaowen and Yang, Jiawei and Che, Rui and Zhang, Huanting and Zhang, Wei},
-  journal={arXiv preprint arXiv:2406.13606},
-  year={2024}
-}
+  booktitle={2024 IEEE International Conference on Multimedia and Expo (ICME)}, 
+  title={DDLNet: Boosting Remote Sensing Change Detection with Dual-Domain Learning}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-6},
+  doi={10.1109/ICME57554.2024.10688140}}
 
 @article{cdmask,
   title={Rethinking Remote Sensing Change Detection With A Mask View},
@@ -191,6 +194,10 @@ If you are interested in our work, please consider giving a 🌟 and citing our 
   year={2024}
 }
 ```
+
+## 📮 Contact
+
+If you are confused about the content of our paper or look forward to further academic exchanges and cooperation, please do not hesitate to contact us. The e-mail address is xwma@zju.edu.cn. We look forward to hearing from you!
 
 ## 💡 Acknowledgement
 
