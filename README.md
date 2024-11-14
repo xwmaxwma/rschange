@@ -13,7 +13,7 @@
 	
   - CD-Mamba (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
  
-  - CDXFormer (Under review)
+  - [CDXFormer](https://arxiv.org/abs/2411.07863) (Under review)
   
   - Other popular methods including 
   
