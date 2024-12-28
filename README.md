@@ -10,6 +10,8 @@
   - [DDLNet](https://arxiv.org/abs/2406.13606) (ICME2024 oral)
 
   - [CDMask](https://arxiv.org/abs/2406.15320) (Under review)
+ 
+  - [STeinFormer](https://ieeexplore.ieee.org/document/10815617) (JSTARS2025)
 	
   - CD-Mamba (Under review, updated soon, refer to [this](https://github.com/Casey-bit))
  
@@ -193,6 +195,16 @@ If you are interested in our work, please consider giving a 🌟 and citing our 
   journal={arXiv preprint arXiv:2406.15320},
   year={2024}
 }
+
+@ARTICLE{10815617,
+  author={Ma, Xiaowen and Wu, Zhenkai and Ma, Mengting and Zhao, Mengjiao and Yang, Fan and Du, Zhenhong and Zhang, Wei},
+  journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing}, 
+  title={STeInFormer: Spatial-Temporal Interaction Transformer Architecture for Remote Sensing Change Detection}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-11},
+  doi={10.1109/JSTARS.2024.3522329}}
 ```
 
 ## 📮 Contact
