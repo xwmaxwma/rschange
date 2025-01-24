@@ -37,6 +37,7 @@
   - Class activation maps
 
 ## 🔥 News
+- `2025/01/02`: [STeInFormer](https://ieeexplore.ieee.org/document/10815617) has been accepted by JSTARS2025.
 
 - `2024/07/14`: Class activation maps and some other popular methods (BIT, SNUNet, ChangeFormer, LGPNet, SARAS-Net) are now supported.
 
@@ -199,11 +200,11 @@ If you are interested in our work, please consider giving a 🌟 and citing our 
 @ARTICLE{10815617,
   author={Ma, Xiaowen and Wu, Zhenkai and Ma, Mengting and Zhao, Mengjiao and Yang, Fan and Du, Zhenhong and Zhang, Wei},
   journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing}, 
-  title={STeInFormer: Spatial-Temporal Interaction Transformer Architecture for Remote Sensing Change Detection}, 
-  year={2024},
-  volume={},
+  title={STeInFormer: Spatial–Temporal Interaction Transformer Architecture for Remote Sensing Change Detection}, 
+  year={2025},
+  volume={18},
   number={},
-  pages={1-11},
+  pages={3735-3745},
   doi={10.1109/JSTARS.2024.3522329}}
 ```
 
