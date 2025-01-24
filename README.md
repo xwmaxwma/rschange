@@ -197,7 +197,7 @@ If you are interested in our work, please consider giving a 🌟 and citing our 
   year={2024}
 }
 
-@ARTICLE{10815617,
+@ARTICLE{steinformer,
   author={Ma, Xiaowen and Wu, Zhenkai and Ma, Mengting and Zhao, Mengjiao and Yang, Fan and Du, Zhenhong and Zhang, Wei},
   journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing}, 
   title={STeInFormer: Spatial–Temporal Interaction Transformer Architecture for Remote Sensing Change Detection}, 
