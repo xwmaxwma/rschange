@@ -38,7 +38,7 @@ def resize_label(label, size):
 
 def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
-    parser.add_argument("-c", "--config", type=str, default="configs\cdmask.py")
+    parser.add_argument("-c", "--config", type=str, default="configs/cdlamba.py")
     return parser.parse_args()
 
 class myTrain(LightningModule):
@@ -83,7 +83,7 @@ class myTrain(LightningModule):
 
     def configure_optimizers(self):
         optimizer, scheduler = build_optimizer(self.cfg.optimizer_config, self.net)
-        return {'optimizer':optimizer,'lr_scheduler':scheduler}
+        return {'optimizer':optimizer,'lr_scheduler':scheduler, 'monitor': self.cfg.monitor_val}
 
     def train_dataloader(self):
         loader = build_dataloader(self.cfg.dataset_config, mode='train')
