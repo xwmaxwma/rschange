@@ -45,6 +45,8 @@ def get_scheduler(cfg, optimizer):
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=cfg.step_size, gamma=cfg.gamma)
     elif cfg.type == 'multistep':
         scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=cfg.milestones, gamma=cfg.gamma)
+    elif cfg.type == 'reduce':
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'max', patience=cfg.patience, factor=cfg.factor)
     else:
         raise KeyError("The scheduler type ( %s ) doesn't exist!!!" % cfg.type)
     
