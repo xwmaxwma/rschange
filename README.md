@@ -37,7 +37,7 @@
   - Class activation maps
 
 ## 🔥 News
-- `2025/02/11`: The official implementation of [CD-Lamba](https://arxiv.org/abs/2501.15455) and [CDXFormer](https://arxiv.org/abs/2411.07863) are now available.
+- `2025/02/11`: The official implementation of [CD-Lamba](https://arxiv.org/abs/2501.15455), [CDXFormer](https://arxiv.org/abs/2411.07863) and some other popular methods (RSMamba, ChangeMamba) are now available.
 
 - `2025/01/02`: [STeInFormer](https://ieeexplore.ieee.org/document/10815617) has been accepted by JSTARS2025.
 
