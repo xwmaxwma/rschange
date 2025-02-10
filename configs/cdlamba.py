@@ -25,7 +25,7 @@ ignore_index = 255
 ######################### model_config #########################
 model_config = dict(
     backbone = dict(
-        type = 'cdmanba',
+        type = 'cdlamba',
         channels = [64, 128, 192, 256]
     ),
     decoderhead = dict(
