@@ -11,3 +11,7 @@ from rscd.models.decoderheads.AFCF3D_de import AFCD3D_decoder
 from rscd.models.decoderheads.USSFCNet import USSFCNet_decoder
 
 from rscd.models.decoderheads.xformer import CDXLSTM
+from rscd.models.decoderheads.detector import changedetector
+from rscd.models.decoderheads.ChangeMambaDecoder import CMDecoder
+
+from rscd.models.decoderheads.none import none_class
