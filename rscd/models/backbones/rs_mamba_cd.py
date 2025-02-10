@@ -37,34 +37,6 @@ except Exception as e:
     # print(f"WARNING: can not import selective_scan_cuda.", flush=True)
     # print(e, flush=True)
 
-from rscd.models.backbones.quad_util.utils import local_scan, local_reverse, local_scan_quad, \
-                        local_reverse_quad, local_scan_quad_quad, local_reverse_quad_quad, \
-                        Scan_FB, Merge_FB, Scan_FB_S, Merge_FB_S, CrossMergeS, CrossScanS, \
-                        local_scan_zero_ones, reverse_local_scan_zero_ones
-
-def my_gumbel_softmax(logits, k):
-    # 添加 Gumbel noise
-    gumbel_noise = -torch.log(-torch.log(torch.rand_like(logits)))
-    gumbel_logits = logits + gumbel_noise
-
-    # 获取 top-k 的索引
-    topk_indices = torch.topk(gumbel_logits, k=k, dim=-1).indices
-
-    # 构造 top-k one-hot 分布
-    topk_onehot = torch.zeros_like(logits)
-    topk_onehot.scatter_(dim=-1, index=topk_indices, value=1.0)
-    return topk_onehot
-
-def window_expansion(x, H, W):
-  # x [b, 1, 4, 1, 1]
-    b, _, num_win = x.shape
-    H1, W1 = int(H/4), int(W/4)
-    num_win1 = int(num_win/4)
-
-    x = x.reshape(b, 1, num_win1, num_win1, 1).squeeze(-1)
-    x = F.interpolate(x, scale_factor=H1)
-
-    return x
 
 # fvcore flops =======================================
 def flops_selective_scan_fn(B=1, L=256, D=768, N=16, with_D=True, with_Z=False, with_complex=False):
@@ -482,50 +454,6 @@ class CrossMerge_Ab_1direction(torch.autograd.Function):
         xs = x.view(B, 1, C, L).repeat(1, 4, 1, 1).contiguous().view(B, 4, C, H, W)
         return xs
 
-class Predictor(nn.Module):
-    """ Image to Patch Embedding
-    """
-    def __init__(self, embed_dim=384):
-        super().__init__()
-        self.in_conv = nn.Sequential(
-            nn.LayerNorm(embed_dim),
-            nn.Linear(embed_dim, embed_dim),
-            nn.GELU()
-        )
-
-        self.out_conv = nn.Sequential(
-            nn.Linear(embed_dim, embed_dim // 2),
-            nn.GELU(),
-            nn.Linear(embed_dim // 2, embed_dim // 4),
-            nn.GELU(),
-            nn.Linear(embed_dim // 4, 2),
-            nn.LogSoftmax(dim=-1)
-        )
-
-    def forward(self, x):
-        if len(x.shape) == 4:
-            B, C, H, W = x.size()
-            x_rs = x.reshape(B, C, -1).permute(0, 2, 1)
-        else:
-            B, N, C = x.size()
-            H = int(N**0.5)
-            x_rs = x
-        x_rs = self.in_conv(x_rs)
-        B, N, C = x_rs.size()
-
-        window_scale = int(H//2)
-        local_x = x_rs[:, :, :C // 2]
-        global_x = x_rs[:, :, C // 2:].view(B, H, -1, C // 2).permute(0, 3, 1, 2)
-        global_x_avg = F.adaptive_avg_pool2d(global_x,  (2, 2)) # [b, c, 2, 2]
-        global_x_avg_concat = F.interpolate(global_x_avg, scale_factor=window_scale)
-        global_x_avg_concat = global_x_avg_concat.view(B, C // 2, -1).permute(0, 2, 1).contiguous()
-
-        x_rs = torch.cat([local_x, global_x_avg_concat], dim=-1)
-
-        x_score = self.out_conv(x_rs)
-        x_score_rs = x_score.permute(0, 2, 1).reshape(B, 2, H, -1)
-        return x_score_rs
-
 
 # =============
 # ZSJ 这里是mamba的具体内容，要增加扫描方向就在这里改
@@ -551,7 +479,6 @@ def cross_selective_scan(
     SelectiveScan=None,
     CrossScan=CrossScan,
     CrossMerge=CrossMerge,
-    _predictor = None
 ):
     # out_norm: whatever fits (B, L, C); LayerNorm; Sigmoid; Softmax(dim=1);...
 
@@ -582,58 +509,8 @@ def cross_selective_scan(
 
     def selective_scan(u, delta, A, B, C, D=None, delta_bias=None, delta_softplus=True):
         return SelectiveScan.apply(u, delta, A, B, C, D, delta_bias, delta_softplus, nrows, backnrows, ssoflex)
-
-###
-    score = _predictor(x)
-
-    ### quad_one_stage
-    score_window = F.adaptive_avg_pool2d(score[:, 1, :, :], (4, 4)) # b, 1, 2, 2
-    locality_decision = my_gumbel_softmax(score_window.view(B, 1, -1), k = 6)  # [b, 1, 4, 1, 1]
-
-    locality = window_expansion(locality_decision, H=int(H), W=int(W))  # [b, 1, l]
-    xs_zeros_ones = None
-    len_zeros = []
-    indices_zeros = []
-    # num_zeros = []
-    indices_ones = []
-    num_ones = []
-    for i in range(B):
-        x_zeros, x_ones, sub_len_zeros, sub_indices_zeros, sub_indices_ones, sub_num_ones = local_scan_zero_ones(locality[i], x[i])
-        len_zeros.append(sub_len_zeros)
-        indices_zeros.append(sub_indices_zeros)
-        # num_zeros.append(sub_num_zeros)
-        indices_ones.append(sub_indices_ones)
-        num_ones.append(sub_num_ones)
-        x_zeros_ones = torch.cat([x_zeros, x_ones], dim=-1)
-        if xs_zeros_ones is None:
-            xs_zeros_ones = x_zeros_ones.unsqueeze(0)
-        else:
-            xs_zeros_ones = torch.cat([xs_zeros_ones, x_zeros_ones.unsqueeze(0)], dim=0)
-    xs_1 = Scan_FB.apply(xs_zeros_ones)  # b, k, c, l 
-
-    xs_zeros_ones_h = None
-    len_zeros_h = []
-    indices_zeros_h = []
-    # num_zeros_h = []
-    indices_ones_h = []
-    num_ones_h = []
-    for i in range(B):
-        x_zeros_h, x_ones_h, sub_len_zeros_h, sub_indices_zeros_h, sub_indices_ones_h, sub_num_ones_h = local_scan_zero_ones(locality[i], x[i], h_scan=True)
-        len_zeros_h.append(sub_len_zeros_h)
-        indices_zeros_h.append(sub_indices_zeros_h)
-        # num_zeros_h.append(sub_num_zeros_h)
-        indices_ones_h.append(sub_indices_ones_h)
-        num_ones_h.append(sub_num_ones_h)
-        x_zeros_ones_h = torch.cat([x_zeros_h, x_ones_h], dim=-1)
-        if xs_zeros_ones_h is None:
-            xs_zeros_ones_h = x_zeros_ones_h.unsqueeze(0)
-        else:
-            xs_zeros_ones_h = torch.cat([xs_zeros_ones_h, x_zeros_ones_h.unsqueeze(0)], dim=0)
-    xs_2 = Scan_FB.apply(xs_zeros_ones_h)  # b, k, c, l 
-
-    xs = torch.cat([xs_1, xs_2], dim=1)
-
-###
+    
+    xs = CrossScan.apply(x)
     
     x_dbl = torch.einsum("b k d l, k c d -> b k c l", xs, x_proj_weight)
     if x_proj_bias is not None:
@@ -656,27 +533,14 @@ def cross_selective_scan(
     # ZSJ 这里把矩阵拆分成不同方向的序列，并进行扫描
     ys: torch.Tensor = selective_scan(
         xs, dts, As, Bs, Cs, Ds, delta_bias, delta_softplus
-    ).view(B, K, -1, H * W)
+    ).view(B, K, -1, H, W)
     # ZSJ 这里把处理之后的序列融合起来，并还原回原来的矩阵形式
-
-    y1 = Merge_FB.apply(ys[:, 0:2])  # BCL
-    y2 = Merge_FB.apply(ys[:, 2:])  # BCL
-    # for quad
-    y = None
-    for i in range(B):
-        y_1 = reverse_local_scan_zero_ones(indices_zeros[i], indices_ones[i], num_ones[i], y1[i, ..., :len_zeros[i]], y1[i, ..., len_zeros[i]:])
-        y_2 = reverse_local_scan_zero_ones(indices_zeros_h[i], indices_ones_h[i], num_ones_h[i], y2[i, ..., :len_zeros_h[i]], y2[i, ..., len_zeros_h[i]:], h_scan=True)
-        sub_y = y_1 + y_2
-        if y is None:
-            y = sub_y.unsqueeze(0)
-        else:
-            y = torch.cat([y, sub_y.unsqueeze(0)], dim=0)
-
+    y: torch.Tensor = CrossMerge.apply(ys)
 
     if out_norm_shape in ["v1"]: # (B, C, H, W)
         y = out_norm(y.view(B, -1, H, W)).permute(0, 2, 3, 1) # (B, H, W, C)
     else: # (B, L, C)
-        y = y.permute(0, 2, 3, 1).contiguous() # (B, L, C)
+        y = y.transpose(dim0=1, dim1=2).contiguous() # (B, L, C)
         y = out_norm(y).view(B, H, W, -1)
 
     return (y.to(x.dtype) if to_dtype else y)
@@ -784,7 +648,7 @@ class OSSM(nn.Module):
         FORWARD_TYPES = dict(
             v0=self.forward_corev0,
             # v2=partial(self.forward_corev2, force_fp32=(not self.disable_force32), SelectiveScan=SelectiveScanCore),
-            v2=partial(self.forward_corev2, force_fp32=True, SelectiveScan=SelectiveScanMamba),
+            v2=partial(self.forward_corev2, force_fp32=True, SelectiveScan=SelectiveScanCore),
             v3=partial(self.forward_corev2, force_fp32=False, SelectiveScan=SelectiveScanOflex),
             v31d=partial(self.forward_corev2, force_fp32=False, SelectiveScan=SelectiveScanOflex, cross_selective_scan=partial(
                 cross_selective_scan, CrossScan=CrossScan_Ab_1direction, CrossMerge=CrossMerge_Ab_1direction,
@@ -816,14 +680,12 @@ class OSSM(nn.Module):
         self.forward_core = FORWARD_TYPES.get(forward_type, None)
         # ZSJ k_group 指的是扫描的方向
         # k_group = 4 if forward_type not in ["debugscan_sharessm"] else 1
-        k_group = 4 if forward_type not in ["debugscan_sharessm"] else 1
+        k_group = 8 if forward_type not in ["debugscan_sharessm"] else 1
 
         # in proj =======================================
         d_proj = d_inner if self.disable_z else (d_inner * 2)
         self.in_proj = nn.Linear(d_model, d_proj, bias=bias, **factory_kwargs)
         self.act: nn.Module = act_layer()
-
-        self.score_predictor = Predictor(d_model*2)
         
         # conv =======================================
         if d_conv > 1:
@@ -994,7 +856,6 @@ class OSSM(nn.Module):
             out_norm_shape=getattr(self, "out_norm_shape", "v0"),
             force_fp32=force_fp32,
             SelectiveScan=SelectiveScan,
-            _predictor = self.score_predictor,
         )
         return x
     
