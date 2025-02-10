@@ -15,7 +15,7 @@ from tools.mask_convert import mask_save
 
 def get_args():
     parser = argparse.ArgumentParser('description=Change detection of remote sensing images')
-    parser.add_argument("-c", "--config", type=str, default="configs\AFCF3DNet.py")
+    parser.add_argument("-c", "--config", type=str, default="configs/cdlama.py")
     parser.add_argument("--ckpt", type=str, default=None)
     parser.add_argument("--output_dir", type=str, default=None)
     return parser.parse_args()
