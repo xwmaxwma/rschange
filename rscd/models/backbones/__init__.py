@@ -7,3 +7,6 @@ from rscd.models.backbones.lgpnet_a import LGPNet_a
 from rscd.models.backbones.SARASNet import SARASNet_backbone
 from rscd.models.backbones.AFCF3D_en import AFCD3D_backbone
 from rscd.models.backbones.USSFCNet import USSFCNet_encoder
+from rscd.models.backbones.cdlamba import cdlamba
+from rscd.models.backbones.rs_mamba_cd import RSM_CD
+from rscd.models.backbones.ChangeMamba_backbone import CMBackbone
