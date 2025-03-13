@@ -61,8 +61,9 @@
 	We have also prepared compressed files [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing) for the CD-Lamba's environment, which you can download directly and install according to the following instructions.
 
   ```shell
-  // First, place this compressed file in the folder of \home\xxx\anaconda3\envs\
-  // And then,
+  // Firstly, you must be in a Linux environment (Ubuntu in Linux or WSL2 in windows).
+  // Then, place this compressed file in the folder of \home\xxx\anaconda3\envs\
+  // Finally,
   tar -xzf rscd_mamba.tar.gz -C rscd_mamba
   conda activate rscd_mamba
   ```
