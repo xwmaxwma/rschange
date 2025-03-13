@@ -55,14 +55,15 @@
   conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.7 -c pytorch -c nvidia
   pip install -r requirements.txt
   ```
+  
 We have also prepared compressed files [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing) for the CD-Lamba's environment, which you can download directly and install according to the following instructions.
+
   ```shell
 // First, place this compressed file in the folder of \home\xxx\anaconda3\envs\
 // And then,
   tar -xzf rscd_mamba.tar.gz -C rscd_mamba
   conda activate rscd_mamba
   ```
-
 
 	Note: same as [rsseg](https://github.com/xwmaxwma/rssegmentation). If you have already installed the environment of [rsseg](https://github.com/xwmaxwma/rssegmentation), use it directly.
 
