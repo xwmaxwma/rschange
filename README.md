@@ -37,7 +37,7 @@
   - Class activation maps
 
 ## 🔥 News
-- `2025/03/13`: The official files of the environment preparation are now available [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing).
+- `2025/03/13`: The official files of the environment preparation are now available in [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing).
    
 - `2025/02/11`: The official implementation of [CD-Lamba](https://arxiv.org/abs/2501.15455), [CDXFormer](https://arxiv.org/abs/2411.07863) and some other popular methods (RSMamba, ChangeMamba) are now available.
 
