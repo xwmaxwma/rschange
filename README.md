@@ -52,13 +52,32 @@
 - Environment preparation
 
   ```shell
-  conda create -n rscd python=3.9
-  conda activate rscd
-  conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.7 -c pytorch -c nvidia
-  pip install -r requirements.txt
+	conda create --name rscd python=3.8
+	conda activate rscd
+	conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+	pip install pytorch-lightning==2.0.5
+	pip install scikit-image==0.19.3 numpy==1.24.4
+	pip install torchmetrics==1.0.1
+	pip install -U catalyst==20.09
+	pip install albumentations==1.3.1
+	pip install einops==0.6.1
+	pip install timm==0.6.7
+	pip install addict==2.4.0
+	pip install soundfile==0.12.1
+	pip install ttach==0.0.3
+	pip install prettytable==3.8.0
+	pip install -U openmim
+	pip install triton==2.0.0
+	mim install mmcv
+	pip install -U fvcore
   ```
-  
-	We have also prepared compressed files [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing) for the CD-Lamba's environment, which you can download directly and install according to the following instructions.
+	If you need to run a model based on Mamba, please additionally perform the following installation for the Mamba environment.
+  ```shell
+  pip install causal_conv1d-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
+  pip install mamba_ssm-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
+  ```
+
+	[Optional] We have also prepared compressed files [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing) for the CD-Lamba's environment, which you can download directly and install according to the following instructions.
 
   ```shell
   // Firstly, you must be in a Linux environment (Ubuntu in Linux or WSL2 in windows).
