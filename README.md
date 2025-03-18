@@ -71,7 +71,7 @@
 	mim install mmcv
 	pip install -U fvcore
   ```
-	If you need to run a model based on Mamba, please additionally download the [releases](https://github.com/xwmaxwma/rschange/releases/tag/mamba_env) perform the following installation for the Mamba environment.
+	If you need to run a model based on Mamba, please additionally download the [releases](https://github.com/xwmaxwma/rschange/releases/tag/mamba_env) and then perform the following installation for the Mamba environment.
   ```shell
   pip install causal_conv1d-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
   pip install mamba_ssm-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
