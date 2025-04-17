@@ -15,7 +15,7 @@
 	
   - [CD-Lamba](https://arxiv.org/abs/2501.15455) (Under review)
  
-  - [CDXFormer](https://arxiv.org/abs/2411.07863) (Under review)
+  - [CDXLSTM](https://arxiv.org/abs/2411.07863) (GRSL2025)
   
   - Other popular methods including 
   
@@ -37,6 +37,8 @@
   - Class activation maps
 
 ## 🔥 News
+- `2025/04/16`: [CDXLSTM](https://arxiv.org/abs/2411.07863) has been accepted by GRSL2025.
+
 - `2025/03/13`: The official files of the environment preparation are now available in [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing).
    
 - `2025/02/11`: The official implementation of [CD-Lamba](https://arxiv.org/abs/2501.15455), [CDXFormer](https://arxiv.org/abs/2411.07863) and some other popular methods (RSMamba, ChangeMamba) are now available.
