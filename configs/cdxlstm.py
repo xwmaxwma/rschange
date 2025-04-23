@@ -1,4 +1,4 @@
-    net = 'CDXLSTM'
+net = 'CDXLSTM'
 ######################## base_config #########################
 epoch = 200
 gpus = [0]
