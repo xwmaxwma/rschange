@@ -85,7 +85,7 @@
   // Firstly, you must be in a Linux environment (Ubuntu in Linux or WSL2 in windows).
   // Then, place this compressed file in the folder of \home\xxx\anaconda3\envs\
   // Finally,
-  tar -xzf rscd_mamba.tar.gz -C rscd_mamba
+  mkdir -p rscd_mamba && tar -xzf rscd_mamba.tar.gz -C rscd_mamba
   conda activate rscd_mamba
   ```
 
