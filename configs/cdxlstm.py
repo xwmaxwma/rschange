@@ -1,4 +1,4 @@
-net = 'CDXFormer'
+    net = 'CDXLSTM'
 ######################## base_config #########################
 epoch = 200
 gpus = [0]
