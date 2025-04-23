@@ -241,6 +241,14 @@ If you are interested in our work, please consider giving a 🌟 and citing our 
   number={},
   pages={3735-3745},
   doi={10.1109/JSTARS.2024.3522329}}
+
+@article{cdxlstm,
+  title={CDXLSTM: Boosting Remote Sensing Change Detection with Extended Long Short-Term Memory},
+  author={Wu, Zhenkai and Ma, Xiaowen and Lian, Rongrong and Zheng, Kai and Zhang, Wei},
+  journal={IEEE Geoscience and Remote Sensing Letters},
+  year={2025},
+  publisher={IEEE}
+}
 ```
 
 ## 📮 Contact
