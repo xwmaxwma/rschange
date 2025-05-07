@@ -242,13 +242,17 @@ If you are interested in our work, please consider giving a 🌟 and citing our 
   pages={3735-3745},
   doi={10.1109/JSTARS.2024.3522329}}
 
-@article{cdxlstm,
-  title={CDXLSTM: Boosting Remote Sensing Change Detection with Extended Long Short-Term Memory},
+@ARTICLE{cdxlstm,
   author={Wu, Zhenkai and Ma, Xiaowen and Lian, Rongrong and Zheng, Kai and Zhang, Wei},
-  journal={IEEE Geoscience and Remote Sensing Letters},
+  journal={IEEE Geoscience and Remote Sensing Letters}, 
+  title={CDxLSTM: Boosting Remote Sensing Change Detection With Extended Long Short-Term Memory}, 
   year={2025},
-  publisher={IEEE}
-}
+  volume={22},
+  number={},
+  pages={1-5},
+  keywords={Feature extraction;Semantics;Transformers;Sensors;Remote sensing;Graphics processing units;Correlation;Convolutional codes;Computational modeling;Computational complexity;Extended long short-term memory (xLSTM);remote sensing change detection (RS-CD);spatiotemporal interaction},
+  doi={10.1109/LGRS.2025.3562480}}
+
 ```
 
 ## 📮 Contact
