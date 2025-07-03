@@ -37,6 +37,8 @@
   - Class activation maps
 
 ## 🔥 News
+- `2025/7/3`: [TinyViM](https://arxiv.org/abs/2411.17473) has been accepted by ICCV 2025! It is an efficient and powerful backbone, and performs well on remote sensing change detection tasks. We have included the code of TinyViM in the rschange repository.
+  
 - `2025/04/16`: [CDxLSTM](https://arxiv.org/abs/2411.07863) has been accepted by GRSL2025.
 
 - `2025/03/13`: The official files of the environment preparation are now available in [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing).
