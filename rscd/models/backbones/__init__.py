@@ -10,3 +10,5 @@ from rscd.models.backbones.USSFCNet import USSFCNet_encoder
 from rscd.models.backbones.cdlamba import cdlamba
 from rscd.models.backbones.rs_mamba_cd import RSM_CD
 from rscd.models.backbones.ChangeMamba_backbone import CMBackbone
+from rscd.models.backbones.CSSM import MambaCSSMUnet
+from rscd.models.backbones.CDMamba import CDMamba
