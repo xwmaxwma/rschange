@@ -37,7 +37,9 @@
   - Class activation maps
 
 ## 🔥 News
-- `2025/7/3`: [TinyViM](https://arxiv.org/abs/2411.17473) has been accepted by ICCV 2025! It is an efficient and powerful backbone, and performs well on remote sensing change detection tasks. We have included the code of TinyViM in the rschange repository.
+- `2025/12/23`: The official implementation of [CDMamba](https://arxiv.org/abs/2406.04207), [CSSM](https://arxiv.org/abs/2504.11080) and some other popular methods (CDMamba, CSSM) are now available. Please Note
+
+- `2025/07/03`: [TinyViM](https://arxiv.org/abs/2411.17473) has been accepted by ICCV 2025! It is an efficient and powerful backbone, and performs well on remote sensing change detection tasks. We have included the code of TinyViM in the rschange repository.
   
 - `2025/04/16`: [CDxLSTM](https://arxiv.org/abs/2411.07863) has been accepted by GRSL2025.
 
@@ -80,6 +82,10 @@
   pip install causal_conv1d-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
   pip install mamba_ssm-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
   ```
+  	If you need to run CDMamba, please refer to \url{https://github.com/hustvl/Vim} and download the folder named \texttt{mamba-1p1p1}. Then replace the \texttt{mamba\_ssm} package in your conda environment with the downloaded version by running:
+  ```shell
+	cp -rf mamba-1p1p1/mamba_ssm /home/xxx/anaconda3/envs/xxx/lib/python3.10/site-packages
+	```
 
 	[Optional] We have also prepared compressed files [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing) for the CD-Lamba's environment, which you can download directly and install according to the following instructions.
 
