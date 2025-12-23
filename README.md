@@ -37,7 +37,7 @@
   - Class activation maps
 
 ## 🔥 News
-- `2025/12/23`: The official implementation of [CDMamba](https://arxiv.org/abs/2406.04207), [CSSM](https://arxiv.org/abs/2504.11080) and some other popular methods (CDMamba, CSSM) are now available. Please Note
+- `2025/12/23`: The official implementation of [CDMamba](https://arxiv.org/abs/2406.04207), [CSSM](https://arxiv.org/abs/2504.11080) and some other popular methods (CDMamba, CSSM) are now available.
 
 - `2025/07/03`: [TinyViM](https://arxiv.org/abs/2411.17473) has been accepted by ICCV 2025! It is an efficient and powerful backbone, and performs well on remote sensing change detection tasks. We have included the code of TinyViM in the rschange repository.
   
