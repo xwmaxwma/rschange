@@ -82,10 +82,10 @@
   pip install causal_conv1d-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
   pip install mamba_ssm-1.2.0.post1+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
   ```
-  	If you need to run CDMamba, please refer to \url{https://github.com/hustvl/Vim} and download the folder named \texttt{mamba-1p1p1}. Then replace the \texttt{mamba\_ssm} package in your conda environment with the downloaded version by running:
+  	If you need to run CDMamba, please refer to [here](https://github.com/hustvl/Vim) and download the folder named "mamba-1p1p1". Then replace the \texttt{mamba\_ssm} package in your conda environment with the downloaded version by running:
   ```shell
-	cp -rf mamba-1p1p1/mamba_ssm /home/xxx/anaconda3/envs/xxx/lib/python3.10/site-packages
-	```
+  cp -rf mamba-1p1p1/mamba_ssm /home/xxx/anaconda3/envs/xxx/lib/python3.10/site-packages
+  ```
 
 	[Optional] We have also prepared compressed files [rscd_mamba](https://drive.google.com/drive/folders/1p0bGAzQX6HkcbTRS5q-ynuhTLQukDLaH?usp=sharing) for the CD-Lamba's environment, which you can download directly and install according to the following instructions.
 
