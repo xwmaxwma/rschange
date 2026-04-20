@@ -9,7 +9,7 @@
 
   - [DDLNet](https://arxiv.org/abs/2406.13606) (ICME2024 oral)
 
-  - [CDMask](https://arxiv.org/abs/2406.15320) (Under review)
+  - [CDMask](https://arxiv.org/abs/2406.15320) (TGRS2026)
  
   - [STeinFormer](https://ieeexplore.ieee.org/document/10815617) (JSTARS2025)
 	
@@ -37,6 +37,10 @@
   - Class activation maps
 
 ## 🔥 News
+
+- `2026/4/20`: [CDMask
+- ](https://arxiv.org/abs/2406.15320) has been accepted by TGRS2026.
+
 - `2025/12/24`: [CD-Lamba](https://arxiv.org/abs/2501.15455) has been accepted by JSTARS2025.
 
 - `2025/12/23`: The official implementation of some popular methods (CDMamba, CSSM) are now available.
