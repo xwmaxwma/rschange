@@ -38,8 +38,7 @@
 
 ## 🔥 News
 
-- `2026/4/20`: [CDMask
-- ](https://arxiv.org/abs/2406.15320) has been accepted by TGRS2026.
+- `2026/4/20`: [CDMask](https://arxiv.org/abs/2406.15320) has been accepted by TGRS2026.
 
 - `2025/12/24`: [CD-Lamba](https://arxiv.org/abs/2501.15455) has been accepted by JSTARS2025.
 
