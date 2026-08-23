@@ -265,7 +265,7 @@ class SetCriterion_mp(nn.Module):
             dn_indices =[]
             for i in range(len(targets)):
                 if len(targets[i]['labels']) > 0:
-                    t = torch.range(0, len(targets[i]['labels']) - 1).long().cuda()
+                    t = torch.arange(len(targets[i]['labels'])).long().cuda()
                     t = t.unsqueeze(0).repeat(scalar, 1)
                     tgt_idx = t.flatten()
                     output_idx = (torch.tensor(range(scalar)) * dn_args['max_num']).long().cuda().unsqueeze(1) + t
